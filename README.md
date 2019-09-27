@@ -5,3 +5,4 @@ Simple social network web application. Technology stack:
 - Spring MVC;
 - Lombok;
 - Thymeleaf;
+
