@@ -10,8 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
-
 @Controller
 @Slf4j
 public class MessageRestController {
@@ -52,13 +50,5 @@ public class MessageRestController {
         Message returnedMessage = messageService.findById(Long.valueOf(id));
         log.info("Message was found successfully. ID: " + returnedMessage.getId());
         return new ResponseEntity<>(returnedMessage.getText(), HttpStatus.OK);
-    }
-
-    @GetMapping
-    @RequestMapping("/message/{id}/isRead")
-    public ResponseEntity<Object> findDateRead(@PathVariable String id) {
-        Date dateRead = messageService.findDateRead(Long.valueOf(id));
-        if (dateRead != null) return new ResponseEntity<>("Message already read", HttpStatus.BAD_REQUEST);
-        else return new ResponseEntity<>(HttpStatus.OK);
     }
 }
