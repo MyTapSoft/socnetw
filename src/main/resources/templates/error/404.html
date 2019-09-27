@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Page Not Found</title>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css" rel="stylesheet"
+          type="text/css">
+    <link rel="stylesheet" th:href="@{/css/style.css}" type="text/css">
+</head>
+<body>
+
+<audio id="onClick" src="../../static/sound/onClick.wav"></audio>
+
+<div class="overlay"></div>
+<div class="topnav" id="myTopnav">
+    <a class="active" href="http://localhost:8080/" onclick="play()">Home</a>
+    <a href="http://localhost:8080/user-registration" onclick="play()">Account</a>
+    <a href="http://localhost:8080/about" onclick="play()">About</a>
+    <a class="icon" href="javascript:void(0);" onclick="myFunction()">
+        <i class="fa fa-bars"></i>
+    </a>
+</div>
+
+<div class="terminal">
+    <h1>Error <span class="errorcode">404</span></h1>
+    <p class="output">The page you are looking for might have been removed, had its name changed or is
+        temporarily
+        unavailable</p>
+    <p class="output">Please try again</p>
+    <p class="output">Or read server logs<span id="dots">...</span>
+        <span id="more">
+    <p th:text="${error}"></p>
+    <button id="404Btn">Show Server Logs</button>
+</div>
+
+<script src="../../static/js/menu.js"></script>
+
+</body>
+
+</html>

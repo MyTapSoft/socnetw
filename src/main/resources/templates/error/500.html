@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Server Error</title>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css" rel="stylesheet"
+          type="text/css">
+    <link rel="stylesheet" th:href="@{/css/style.css}" type="text/css">
+    <script src="../../static/js/menu.js"></script>
+</head>
+<body>
+
+<audio id="onClick" src="../../static/sound/onClick.wav"></audio>
+
+<div class="overlay"></div>
+<div class="topnav" id="myTopnav">
+    <a class="active" href="http://localhost:8080/" onclick="play()">Home</a>
+    <a href="http://localhost:8080/user-registration" onclick="play()">Account</a>
+    <a href="http://localhost:8080/about" onclick="play()">About</a>
+    <a class="icon" href="javascript:void(0);" onclick="myFunction()">
+        <i class="fa fa-bars"></i>
+    </a>
+</div>
+
+<div class="terminal">
+    <h1>Error <span class="errorcode">500</span></h1>
+    <p class="output">Looks like it's some problem with your request</p>
+    <p class="output">Please try again</p>
+    <p class="output">Or read server logs<span id="dots">...</span></p>
+    <div class="showMore">
+        <span id="more"><p th:text="${error}"></p></span>
+    </div>
+    <button id="myBtn" onclick="myFunction()">Show Server Logs</button>
+</div>
+
+</body>
+
+</html>

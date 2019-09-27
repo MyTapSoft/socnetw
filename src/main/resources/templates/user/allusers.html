@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>All Users Page</title>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css" rel="stylesheet"
+          type="text/css">
+    <link rel="stylesheet" th:href="@{/css/style.css}" type="text/css">
+    <script src="../static/js/menu.js"></script>
+</head>
+<body>
+
+<audio id="onClick" src="../../static/sound/onClick.wav"></audio>
+
+<div class="overlay"></div>
+<div class="topnav" id="myTopnav">
+    <a class="active" href="http://localhost:8080/" onclick="play()">Home</a>
+    <a href="http://localhost:8080/user-registration" onclick="play()">Account</a>
+    <a href="http://localhost:8080/about" onclick="play()">About</a>
+    <a class="icon" href="javascript:void(0);" onclick="myFunction()">
+        <i class="fa fa-bars"></i>
+    </a>
+</div>
+
+
+<table>
+    <thead>
+    <tr>
+        <th> Username</th>
+        <th> ID</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:if="${user.empty}">
+        <td colspan="2"> No Books Available</td>
+    </tr>
+    <!--/*@thymesVar id="user" type="com.socnetw.socnetw.model.User"*/-->
+    <tr th:each="user : ${user}">
+        <td><span th:text="${user.userName}"> Username </span></td>
+        <td><span th:text="${user.id}"> ID </span></td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+
+</html>

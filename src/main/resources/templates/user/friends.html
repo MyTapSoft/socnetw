@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Friends</title>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css" rel="stylesheet"
+          type="text/css">
+    <link rel="stylesheet" th:href="@{/css/style.css}" type="text/css">
+    <script src="../../static/js/menu.js"></script>
+</head>
+<body>
+
+<audio id="onClick" src="../../static/sound/onClick.wav"></audio>
+
+<div class="overlay"></div>
+<div class="topnav" id="myTopnav">
+    <a class="active" href="http://localhost:8080/" onclick="play()">Home</a>
+    <a href="http://localhost:8080/user-registration" onclick="play()">Account</a>
+    <a href="http://localhost:8080/about" onclick="play()">About</a>
+    <a class="icon" href="javascript:void(0);" onclick="myFunction()">
+        <i class="fa fa-bars"></i>
+    </a>
+</div>
+
+
+<table>
+    <thead>
+    <tr>
+        <th> Username</th>
+        <th> ID</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!--/*@thymesVar id="user" type="com.socnetw.socnetw.model.User"*/-->
+    <tr th:if="${user == null}">
+        <td colspan="2"> No Friends Yet</td>
+    </tr>
+    <tr th:each="user : ${user}">
+        <td>
+            <span th:text="${user.getUserName()}"> Username </span></td>
+        <td><span th:text="${user.getId()}"> ID </span></td>
+    </tr>
+    </tbody>
+</table>
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.0.js"></script>
+<label for="userIdTo"><b>ID: </b></label>
+<input id="userIdTo" placeholder="Enter ID: " required type="number">
+
+<label for="status"><b>Status</b></label>
+<input id="status" placeholder="Enter status" required type="text">
+
+<button id="btn">Send</button>
+
+<script>
+    $("#btn").on('click', function () {
+        var $userIdTo = $('#userIdTo');
+        var $status = $('#status');
+        $.ajax({
+            type: "POST",
+            url: "/relationship/update",
+            data: {
+                userIdTo: $userIdTo.val(),
+                status: $status.val()
+            },
+            success: function success(data) {
+                alert("Successfully");
+            },
+            error: function error(data) {
+                alert("Fail");
+            }
+        });
+    });
+
+</script>
+<script src="../../static/js/menu.js"></script>
+
+</body>
+
+</html>
