@@ -18,7 +18,7 @@ import java.time.LocalDate;
 @Setter
 @EqualsAndHashCode
 @ToString
-public class Message implements IdEntity {
+public class Message   {
 
     @Id
     @SequenceGenerator(name = "MESSAGE_SEQ", sequenceName = "MESSAGE_SEQ", allocationSize = 1)

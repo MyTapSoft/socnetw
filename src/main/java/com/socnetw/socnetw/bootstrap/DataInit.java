@@ -1,14 +1,14 @@
 package com.socnetw.socnetw.bootstrap;
 
 import com.socnetw.socnetw.model.*;
-import com.socnetw.socnetw.repository.MessageRepository;
+import com.socnetw.socnetw.repository.MessageRepositorys;
 import com.socnetw.socnetw.repository.PostRepository;
 import com.socnetw.socnetw.repository.RelationshipRepository;
 import com.socnetw.socnetw.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,20 +16,21 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
-@Profile("h2")
+@Profile("default")
 @Component
 public class DataInit implements ApplicationListener<ContextRefreshedEvent> {
     private UserRepository userRepository;
     private PostRepository postRepository;
     private RelationshipRepository relationshipRepository;
-    private MessageRepository messageRepository;
+    private MessageRepositorys messageRepository;
+    private PasswordEncoder encoder;
 
-    @Autowired
-    public DataInit(UserRepository userRepository, PostRepository postRepository, RelationshipRepository relationshipRepository, MessageRepository messageRepository) {
+    public DataInit(UserRepository userRepository, PostRepository postRepository, RelationshipRepository relationshipRepository, MessageRepositorys messageRepository, PasswordEncoder encoder) {
         this.userRepository = userRepository;
         this.postRepository = postRepository;
         this.relationshipRepository = relationshipRepository;
         this.messageRepository = messageRepository;
+        this.encoder = encoder;
     }
 
     @Override
@@ -38,28 +39,33 @@ public class DataInit implements ApplicationListener<ContextRefreshedEvent> {
         User john = new User();
         john.setBirthDate(LocalDate.now());
         john.setEmail("jo4hn@gmail.com");
-        john.setPassword("sadasDfd32fd");
+        john.setPassword(encoder.encode("123"));
         john.setPhoneNumber("82145558741");
         john.setRealName("John");
-        john.setUserName("Johny");
+        john.setUsername("Johny");
         Set<Post> johnPosts = new HashSet<>();
+        Set<UserAuthority> authorityTypes = new HashSet<>();
+        UserAuthority authority = new UserAuthority();
+        authority.setName(UserAuthorityType.ROLE_ADMIN);
+        authorityTypes.add(authority);
+        john.setAuthorities(authorityTypes);
 
         User kay = new User();
         kay.setBirthDate(LocalDate.now());
         kay.setEmail("c7at@gmail.com");
-        kay.setPassword("sdfSDF98Dfs4");
+        kay.setPassword(encoder.encode("123"));
         kay.setPhoneNumber("89974554774");
         kay.setRealName("Katy");
-        kay.setUserName("Cat");
+        kay.setUsername("Cat");
         Set<Post> kayPosts = new HashSet<>();
 
         User linda = new User();
         linda.setBirthDate(LocalDate.now());
         linda.setEmail("lin2da@gmail.com");
-        linda.setPassword("dsfjsdfDFkd9sdil73");
+        linda.setPassword(encoder.encode("123"));
         linda.setPhoneNumber("+76322222222");
         linda.setRealName("Linda");
-        linda.setUserName("Lindy");
+        linda.setUsername("Lindy");
         Set<Post> lindaPosts = new HashSet<>();
 
         Set<User> taggedUsers = new HashSet<>();

@@ -20,7 +20,7 @@ import java.util.Set;
 @Setter
 @EqualsAndHashCode(exclude = {"usersTagged", "userPagePosted"})
 @ToString
-public class Post implements IdEntity {
+public class Post  {
     @Id
     @SequenceGenerator(name = "POST_SEQ", sequenceName = "POST_SEQ", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "POST_SEQ")

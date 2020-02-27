@@ -1,26 +1,28 @@
 package com.socnetw.socnetw.service;
 
 import com.socnetw.socnetw.exceptions.BadRequestException;
+import com.socnetw.socnetw.exceptions.NotFoundException;
 import com.socnetw.socnetw.model.Message;
 import com.socnetw.socnetw.model.Relationship;
 import com.socnetw.socnetw.model.RelationshipStatus;
-import com.socnetw.socnetw.repository.MessageRepository;
+import com.socnetw.socnetw.repository.MessageRepositorys;
 import com.socnetw.socnetw.repository.RelationshipRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.Optional;
 
 @Service
 @Slf4j
 public class MessageService {
 
-    private final MessageRepository messageRepository;
+    private final MessageRepositorys messageRepository;
     private final RelationshipRepository relationshipRepository;
 
     @Autowired
-    public MessageService(MessageRepository messageRepository, RelationshipRepository relationshipRepository) {
+    public MessageService(MessageRepositorys messageRepository, RelationshipRepository relationshipRepository) {
         this.messageRepository = messageRepository;
         this.relationshipRepository = relationshipRepository;
     }
@@ -35,20 +37,19 @@ public class MessageService {
     }
 
     public Message update(Message message) throws BadRequestException {
-        isRead(message);
-        return messageRepository.update(message);
+//        isRead(message);
+//        return messageRepository.update(message);
+        return new Message();
     }
 
     public void delete(Long id) throws BadRequestException {
         isRead(id);
-        messageRepository.delete(id, Message.class);
+        messageRepository.deleteById(id);
 
     }
 
     public Message findById(Long id) throws BadRequestException {
-        Message result = messageRepository.findById(id, Message.class);
-        if (result == null) throw new BadRequestException("There is no message with ID: " + id);
-        return result;
+        return messageRepository.findById(id).orElseThrow(() -> new NotFoundException(String.format("Message with ID: %d not found", id)));
     }
 
     public Date findDateRead(Long messageId) {
@@ -60,6 +61,7 @@ public class MessageService {
             throw new BadRequestException("Message has been read. You can't modify it.");
         }
     }
+
     private void isRead(Message message) throws BadRequestException {
         if (message.getDateRead() != null) {
             throw new BadRequestException("Message has been read. You can't modify it.");

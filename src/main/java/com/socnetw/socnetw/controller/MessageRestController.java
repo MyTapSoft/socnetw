@@ -20,32 +20,28 @@ public class MessageRestController {
         this.messageService = messageService;
     }
 
-    @PostMapping
-    @RequestMapping("/message/send")
+    @PostMapping("/message/send")
     public ResponseEntity<Object> send(@ModelAttribute Message message) throws BadRequestException {
         Message returnedMessage = messageService.send(message);
         log.info("Message send to user: " + returnedMessage.getUserTo().getId() + " from user: " + returnedMessage.getUserFrom().getId());
         return new ResponseEntity<>(returnedMessage.getText(), HttpStatus.OK);
     }
 
-    @PutMapping
-    @RequestMapping("/message/update")
+    @PutMapping("/message/update")
     public ResponseEntity<Object> update(@ModelAttribute Message message) throws BadRequestException {
         Message returnedMessage = messageService.update(message);
         log.info("Message updated successfully. ID: " + returnedMessage.getId());
         return new ResponseEntity<>(returnedMessage.getText(), HttpStatus.OK);
     }
 
-    @DeleteMapping
-    @RequestMapping("/message/{id}/delete")
+    @DeleteMapping("/message/{id}/delete")
     public ResponseEntity<Object> delete(@PathVariable String id) throws BadRequestException {
         messageService.delete(Long.valueOf(id));
         log.info("Message deleted successfully. ID: " + id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping
-    @RequestMapping("/message/{id}")
+    @GetMapping("/message/{id}")
     public ResponseEntity<Object> findById(@PathVariable String id) throws BadRequestException {
         Message returnedMessage = messageService.findById(Long.valueOf(id));
         log.info("Message was found successfully. ID: " + returnedMessage.getId());

@@ -14,11 +14,12 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
+@RequestMapping("/post")
 public class PostViewController {
 
     private final PostService postService;
-    private final String POSTS_POST_URL = "posts/feed";
-    private final String POSTS_ALLPOSTS_URL = "posts/allposts";
+    private final String POST_URL = "posts/feed";
+    private final String ALL_POSTS_URL = "posts/allposts";
 
 
     @Autowired
@@ -26,56 +27,49 @@ public class PostViewController {
         this.postService = postService;
     }
 
-    @GetMapping
-    @RequestMapping("/feed")
+    @GetMapping("/feed")
     public String getFeed(HttpSession session, Model model) throws UnauthorizedException {
         if (session.getAttribute("loginStatus") == null) throw new UnauthorizedException("You have to login first");
         Long userId = (Long) session.getAttribute("userId");
         model.addAttribute("posts", postService.feed(userId));
-        System.out.println(postService.feed(userId));
-        return POSTS_POST_URL;
+        return POST_URL;
     }
 
-    @GetMapping
-    @RequestMapping("/post/{postId}")
+    @GetMapping("/{postId}")
     public String findPostById(@PathVariable String postId, Model model) {
         Post post = postService.findById(Long.parseLong(postId));
         model.addAttribute("post", post);
-        return POSTS_POST_URL;
+        return POST_URL;
     }
 
-    @GetMapping
-    @RequestMapping("/post/{userId}/basic")
+    @GetMapping("/{userId}/basic")
     public String getUserAndFriendsPosts(@PathVariable String userId, Model model) {
         List<Post> posts = postService.findUserAndFriendsPosts(Long.valueOf(userId));
         model.addAttribute("posts", posts);
-        return POSTS_ALLPOSTS_URL;
+        return ALL_POSTS_URL;
         //todo connect path variable on UI side
     }
 
-    @GetMapping
-    @RequestMapping("/post/all")
+    @GetMapping("/all")
     public String getAllPosts(Model model) {
         List<Post> posts = postService.findAll();
         model.addAttribute("posts", posts);
-        return POSTS_ALLPOSTS_URL;
+        return ALL_POSTS_URL;
     }
 
-    @GetMapping
-    @RequestMapping("/post/{userId}/all")
+    @GetMapping("/{userId}/all")
     public String getUserPosts(@PathVariable String userId, Model model) {
         List<Post> posts = postService.findByUserId(Long.valueOf(userId));
         model.addAttribute("posts", posts);
-        return POSTS_ALLPOSTS_URL;
+        return ALL_POSTS_URL;
         //todo connect path variable on UI side
     }
 
-    @GetMapping
-    @RequestMapping("/post/{userId}/friends")
+    @GetMapping("/{userId}/friends")
     public String getFriendsPosts(@PathVariable String userId, Model model) {
         List<Post> posts = postService.findFriendsPosts(Long.valueOf(userId));
         model.addAttribute("posts", posts);
-        return POSTS_ALLPOSTS_URL;
+        return ALL_POSTS_URL;
         //todo connect path variable on UI side
     }
 }

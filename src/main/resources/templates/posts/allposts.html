@@ -39,7 +39,7 @@
     <!--/*@thymesVar id="user" type="com.socnetw.socnetw.model.User"*/-->
     <tr th:each="post : ${posts}">
         <td><span th:text="${post.getId()}"> 0 </span></td>
-        <td><span th:text="${post.getUserPosted().getUserName()}"> Sarah </span></td>
+        <td><span th:text="${post.getUserPosted().getUsername()}"> Sarah </span></td>
         <td><span th:text="${post.getMessage()}"> Some message </span></td>
     </tr>
     </tbody>

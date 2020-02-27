@@ -16,6 +16,7 @@ import java.time.LocalDate;
 @Entity
 @ToString
 @EqualsAndHashCode
+@IdClass(RelationshipPK.class)
 public class Relationship implements Serializable {
     @Id
     private Long userIdFrom;
@@ -25,6 +26,4 @@ public class Relationship implements Serializable {
     private RelationshipStatus status;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "YYYY-MM-DD HH:mm:ss")
     private LocalDate friendsRequestDate;
-
-
 }

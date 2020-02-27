@@ -11,10 +11,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import javax.sql.DataSource;
 import java.sql.SQLException;
 
-@Profile("default")
+@Profile("oracle")
 @Configuration
 @PropertySource("classpath:database.properties")
-public class OracleConfig implements WebMvcConfigurer {
+public class OracleDbConfig implements WebMvcConfigurer {
 
     @Value("${db.url}")
     private String dbUrl;

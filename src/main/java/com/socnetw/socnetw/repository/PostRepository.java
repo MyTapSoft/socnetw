@@ -1,82 +1,32 @@
 package com.socnetw.socnetw.repository;
 
 import com.socnetw.socnetw.model.Post;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.List;
 
-@Repository
-@Transactional
-@EnableTransactionManagement
-public class PostRepository extends CrudRepository<Post> {
-    @PersistenceContext
-    private EntityManager entityManager;
+public interface PostRepository extends CrudRepository<Post, Long> {
 
-    private static final String GET_USER_POSTS = "SELECT * FROM POST WHERE USER_POSTED = :userId";
-    private static final String GET_ALL_POSTS = "SELECT * FROM POST";
-    private static final String GET_USER_AND_FRIENDS_POSTS_BY_USER_PAGE = "SELECT P.*\n" +
-            " FROM POST P\n" +
-            "         JOIN USERS U ON P.USER_POSTED = U.USER_ID\n" +
-            " WHERE P.USER_PAGE_POSTED = :userId\n" +
-            " ORDER BY P.DATE_POSTED";
-    private static final String GET_FRIENDS_POSTS_BY_USER_PAGE = "SELECT P.*\n" +
-            " FROM POST P\n" +
-            "    JOIN USERS U ON P.USER_POSTED = U.USER_ID\n" +
-            " WHERE P.USER_PAGE_POSTED = :userId\n" +
-            "    AND P.USER_POSTED != :userId";
-    private static final String GET_FEED = "SELECT p.*\n" +
-            " FROM POST p\n" +
-            " WHERE p.USER_POSTED IN (SELECT U.USER_ID\n" +
-            "                        FROM USERS U\n" +
-            "                                 JOIN RELATIONSHIP R\n" +
-            "                                      ON (U.USER_ID = R.USER_ID_FROM OR U.USER_ID = R.USER_ID_TO)\n" +
-            "                                          AND U.USER_ID != :userId\n" +
-            "                        WHERE R.STATUS = :status\n" +
-            "                          AND (R.USER_ID_TO = :userId OR R.USER_ID_FROM = :userId))\n" +
-            " ORDER BY P.DATE_POSTED DESC \n" +
-            "    OFFSET :offset ROWS FETCH NEXT :limit ROWS ONLY;\n";
+    @Query(value = "SELECT P.* FROM POST P " +
+            "JOIN USERS U ON P.USER_POSTED = U.USER_ID " +
+            "WHERE P.USER_PAGE_POSTED = :userId ORDER BY P.DATE_POSTED", nativeQuery = true)
+    List<Post> findUserAndFriendsPosts(@Param("userId")Long userId);
 
-    private static final int LIMIT = 10;
-    private static final Short OFFSET = 0;
+    @Query(value = "SELECT P.* FROM POST P " +
+            "JOIN USERS U ON P.USER_POSTED = U.USER_ID " +
+            "WHERE P.USER_PAGE_POSTED = :userId " +
+            "AND P.USER_POSTED != :userId", nativeQuery = true)
+    List<Post> findFriendsPosts(@Param("userId") Long userId);
 
-    public List<Post> findUserAndFriendsPosts(Long userId) {
-        List<Post> list = entityManager.createNativeQuery(GET_USER_AND_FRIENDS_POSTS_BY_USER_PAGE, Post.class)
-                .setParameter("userId", userId)
-                .getResultList();
-        return list;
-    }
+    @Query(value = "SELECT * FROM POST WHERE USER_POSTED = :userId", nativeQuery = true)
+    List<Post> findUserPosts(@Param("userId") Long userId);
 
-    public List<Post> findFriendsPosts(Long userId) {
-        List<Post> list = entityManager.createNativeQuery(GET_FRIENDS_POSTS_BY_USER_PAGE, Post.class)
-                .setParameter("userId", userId)
-                .getResultList();
-        return list;
-    }
-
-    public List<Post> findAll() {
-        List<Post> list = entityManager.createNativeQuery(GET_ALL_POSTS, Post.class)
-                .getResultList();
-        return list;
-    }
-
-    public List<Post> findUserPosts(Long userId) {
-        List<Post> list = entityManager.createNativeQuery(GET_USER_POSTS, Post.class)
-                .setParameter("userId", userId)
-                .getResultList();
-        return list;
-    }
-
-    public List<Post> findFeed(Long userId) {
-        List<Post> list = entityManager.createNativeQuery(GET_FEED, Post.class)
-                .setParameter("userId", userId)
-                .setParameter("offset", OFFSET)
-                .setParameter("limit", LIMIT)
-                .setParameter("status", "accepted")
-                .getResultList();
-        return list;
-    }
+    @Query(value = "SELECT p.* FROM POST p " +
+            "WHERE p.USER_POSTED " +
+            "IN (SELECT U.USER_ID FROM USERS U JOIN RELATIONSHIP R ON (U.USER_ID = R.USER_ID_FROM OR U.USER_ID = R.USER_ID_TO)" +
+            " AND U.USER_ID != :userId WHERE R.STATUS = :status AND (R.USER_ID_TO = :userId OR R.USER_ID_FROM = :userId)) " +
+            "ORDER BY P.DATE_POSTED DESC OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY", nativeQuery = true)
+    List<Post> findFeed(@Param("userId")Long userId);
 }

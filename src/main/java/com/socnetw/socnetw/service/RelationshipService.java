@@ -31,7 +31,7 @@ public class RelationshipService {
         if (relationship != null && (relationship.getStatus() == RelationshipStatus.DELETED || relationship.getStatus() == RelationshipStatus.CANCELED))
             return update(userIdFrom, userIdTo, RelationshipStatus.PENDING);
         else if (relationship != null) throw new DuplicateException("Relationship Already Exist");
-        if (dao.findRequestAmount(from) > 10) throw new BadRequestException("Request amount limit");
+        if (dao.findFriendsRequestAmount(from) > 10) throw new BadRequestException("Request amount limit");
 
         relationship = new Relationship();
         relationship.setUserIdFrom(from);
@@ -42,11 +42,11 @@ public class RelationshipService {
     }
 
     public Relationship update(String userIdFrom, String userIdTo, RelationshipStatus status) throws BadRequestException {
-        Relationship relationship = validate(status, userIdFrom, userIdTo);
-        relationship.setStatus(status);
-        relationship.setFriendsRequestDate(LocalDate.now());
-        return dao.update(relationship);
-
+//        Relationship relationship = validate(status, userIdFrom, userIdTo);
+//        relationship.setStatus(status);
+//        relationship.setFriendsRequestDate(LocalDate.now());
+//        return dao.update(relationship);
+        return new Relationship();
     }
 
     private Relationship findByIds(String userIdFrom, String userIdTo) {
@@ -54,11 +54,11 @@ public class RelationshipService {
     }
 
     private Long getFriendsAmount(Long userId) {
-        return dao.findFriendsAmount(userId);
+        return dao.findAmountOfFriends(userId);
     }
 
     private Long getRequestAmount(Long userId) {
-        return dao.findRequestAmount(userId);
+        return dao.findFriendsRequestAmount(userId);
     }
 
     private LocalDate getFriendRequestDate(Long userIdFrom, Long userIdTo) {

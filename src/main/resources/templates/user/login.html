@@ -3,51 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <title>User Login</title>
-
     <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css" rel="stylesheet"
           type="text/css">
     <link rel="stylesheet" th:href="@{/css/style.css}" type="text/css">
     <script th:src="@{/js/menu.js}"></script>
     <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
-
-
     <div class="overlay"></div>
 </head>
 <body>
-
-
-<div class="logPasBtn" style="margin: 0 auto; width: 50%; padding: 20%;">
-    <label for="username"><b>Username</b></label>
-    <input id="username" placeholder="" required type="text">
-    <label for="psw"><b>Password</b></label>
-    <input id="psw" pattern="[0-9]{7,}" placeholder="" required type="password">
-    <button id="login">Login</button>
+<div class="container" style="margin: 0 auto; width: 50%; padding: 20%;">
+    <form class="form-signin" method="post" action="/login">
+        <h2 class="form-signin-heading">Authentication required</h2>
+        <input type="text" id="username" name="username" class="form-control" placeholder="Username" required=""
+               autofocus="">
+        <input type="password" id="password" name="password" class="form-control" placeholder="Password" required="">
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+        <p> Remember me?
+        <input type="checkbox" id="remember-me" name="remember-me" class="form-control">
+        </p>
+    </form>
 </div>
-
-
-<script>
-    $("#login").on('click', function () {
-        var $userName = $('#username');
-        var $password = $('#psw');
-        $.ajax({
-            type: "POST",
-            url: "/login",
-            data: {
-                username: $userName.val(),
-                password: $password.val()
-            },
-            success: function success(data) {
-                window.location.href = "http://localhost:8080/user/" + data;
-            },
-            error: function error(data) {
-                alert(data);
-            }
-        });
-    });
-
-</script>
-
-
 </body>
-
 </html>

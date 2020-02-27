@@ -12,6 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 public class PostService {
@@ -31,21 +34,21 @@ public class PostService {
     }
 
     public void delete(Long id) throws BadRequestException {
-        Post post = dao.findById(id, Post.class);
-        if (post == null) throw new BadRequestException("Post doesn't exist");
-        if (!post.getId().equals(id)) throw new BadRequestException("You can't modify this post");
-        dao.delete(id, Post.class);
+        Optional<Post> optionalPost = dao.findById(id);
+        if (optionalPost.isEmpty()) throw new NotFoundException("Post doesn't exist");
+        if (!optionalPost.get().getId().equals(id)) throw new BadRequestException("You can't modify this post");
+        dao.deleteById(id);
     }
 
     public Post update(Post post) throws BadRequestException {
-        validation(post);
-        return dao.update(post);
+//        validation(post);
+//        return dao.update(post);
+        return new Post();
     }
 
     public Post findById(Long id) {
-        Post result = dao.findById(id, Post.class);
-        if (result == null) throw new NotFoundException("Post With ID: " + id + " Not Found");
-        return result;
+        Optional<Post> optionalPost = dao.findById(id);
+        return optionalPost.orElseThrow(() -> new NotFoundException(String.format("Post with ID: %d not found", id)));
 
     }
 
@@ -62,7 +65,8 @@ public class PostService {
     }
 
     public List<Post> findAll() {
-        return dao.findAll();
+        return StreamSupport.stream(dao.findAll().spliterator(), false)
+                .collect(Collectors.toList());
     }
 
     public List<Post> feed(Long userId) {

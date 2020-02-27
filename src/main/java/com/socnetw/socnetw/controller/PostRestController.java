@@ -20,16 +20,14 @@ public class PostRestController {
         this.postService = postService;
     }
 
-    @PostMapping
-    @RequestMapping("/post/new")
+    @PostMapping("/post/new")
     public ResponseEntity<Object> save(@ModelAttribute Post post) throws BadRequestException {
         Post result = postService.save(post);
         log.info("New post added successfully. Post ID: " + result.getId() + ". User ID: " + result.getUserPosted().getId());
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @PutMapping
-    @RequestMapping("/post/{postId}/update")
+    @PutMapping("/post/{postId}/update")
     public ResponseEntity<Object> update(@ModelAttribute Post post, @PathVariable String postId) throws BadRequestException {
         Post result = postService.update(post);
         log.info("Post updated successfully. Post ID: " + result.getId() + ". User ID: " + result.getUserPosted().getId());
@@ -37,8 +35,7 @@ public class PostRestController {
         //todo wrong method logic
     }
 
-    @DeleteMapping
-    @RequestMapping("/post/{postId}/delete")
+    @DeleteMapping("/post/{postId}/delete")
     public ResponseEntity<Object> deleteById(@PathVariable String postId) throws BadRequestException {
         postService.delete(Long.parseLong(postId));
         log.info("Post deleted successfully. Post ID: " + postId);

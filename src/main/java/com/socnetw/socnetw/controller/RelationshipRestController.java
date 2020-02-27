@@ -26,8 +26,7 @@ public class RelationshipRestController {
         this.service = service;
     }
 
-    @PostMapping
-    @RequestMapping("/relationship/new")
+    @PostMapping("/relationship/new")
     public ResponseEntity<String> save(@RequestParam String userIdTo, @RequestParam String desiredStatus, HttpSession session) throws UnauthorizedException, BadRequestException {
         if (RelationshipStatus.valueOf(desiredStatus) != RelationshipStatus.PENDING) {
             return update(session, userIdTo, desiredStatus);
@@ -39,8 +38,7 @@ public class RelationshipRestController {
         return new ResponseEntity<>("Request Send", HttpStatus.OK);
     }
 
-    @PutMapping
-    @RequestMapping("/relationship/update")
+    @PutMapping("/relationship/update")
     public ResponseEntity<String> update(HttpSession session,
                                          @RequestParam String userIdTo,
                                          @RequestParam String desiredStatus) throws UnauthorizedException, BadRequestException {
