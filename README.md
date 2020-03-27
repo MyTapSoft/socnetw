@@ -6,3 +6,8 @@ Simple social network web application. Technology stack:
 - Lombok;
 - Thymeleaf;
 
+Tasks:
+ - add validation
+ - add password check
+ - fix thymeleaf binding
+

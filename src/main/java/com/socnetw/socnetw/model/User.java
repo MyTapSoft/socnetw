@@ -2,17 +2,16 @@ package com.socnetw.socnetw.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.*;
-import org.springframework.security.core.GrantedAuthority;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -37,10 +36,9 @@ public class User implements Serializable {
     @Size(min = 2, max = 32)
     private String realName;
 
-    @Email
     private String email;
 
-    @Pattern(regexp = "^((\\+7|7|8)+([0-9]){10})$")
+    // @Pattern(regexp = "^((\\+7|7|8)+([0-9]){10})$")
     private String phoneNumber;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "YYYY-MM-DD HH:mm:ss")
@@ -51,13 +49,13 @@ public class User implements Serializable {
     private Set<Post> posts = new HashSet<>();
 
     @NotBlank
-   // @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$")
+    // @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$")
     private String password;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "user_authority",
-            joinColumns = { @JoinColumn(name = "user_id") },
-            inverseJoinColumns = { @JoinColumn(name = "authority_id") })
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "authority_id")})
     private Set<UserAuthority> authorities = new HashSet<>();
 
 }

@@ -1,4 +1,4 @@
-package com.socnetw.socnetw.service.Validator;
+package com.socnetw.socnetw.validation.chainOfResp;
 
 import com.socnetw.socnetw.exceptions.BadRequestException;
 import com.socnetw.socnetw.model.RelationshipStatus;

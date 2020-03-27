@@ -1,4 +1,6 @@
 spring:
+  thymeleaf:
+    mode: LEGACYHTML5
   datasource:
 #    url: jdbc:mysql://localhost:3306/socnetwDB
     url: jdbc:h2:mem:testdb

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css" rel="stylesheet"
+          th:href="@{'https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css'}"
+          type="text/css">
+    <link href="css/style.css" rel="stylesheet" th:href="@{css/style.css}" type="text/css">
+    <script th:src="@{/js/menu.js}"></script>
+    <script th:src="'https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js'"
+            src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
+    <div class="overlay"></div>
+    <meta charset="UTF-8">
+    <title>Thymeleaf with examples</title>
+</head>
+<!--local variable scope=block{}-->
+<body th:with="strt=${model.name}">
+<div th:replace="fragments/menu_fragments :: header_menu"></div>
+<p/><a th:href="@{'https://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html'}" href="">Official documentation</a>
+<p/>Variable Expressions: ${...}
+<p/>Selection Variable Expressions: *{...}
+<p/>Message Expressions: #{...}
+<p/>Link URL Expressions: @{...}
+<p/>Fragment Expressions: ~{...}
+
+<!--Text-->
+<p/>
+Simple text: <p th:text="${strt}" th:style="'color:' + ${model.color}" style="color: aqua">Hello</p>
+Simple text concat: <p th:text="'Hello ' + ${strt}">Hello</p>
+Simple text concat: <p th:text="${'Hello ' + strt}">Hello</p>
+Simple text into tag: <p>Hello <span th:text="${strt}"> username</span> watsapp</p>
+<p/>==============================
+<!--HashMap-->
+Hashmap: <p th:text="${model.surname}">Some name</p>
+<p th:text="${model.name}">Some name</p>
+Calendar: <p th:text="${#calendars.format(model.date, 'dd/MMM/yyyy HH:mm')}">Some name</p>
+Calendar: <p th:text="${#calendars.format(model.date)}">Some name</p>
+===============================
+<!--Link-->
+Link: <a th:href="@{/}" href="/user/all">Link</a>
+<p/>
+Dynamic Link: <a th:href="@{'/user/' + model.id}" href="/user/all">Link</a>
+<p/>
+Dynamic Link with parameters: <a th:href="@{/user(id=${model.id}, trial=1)}" href="/user/all">Link</a>
+<p/>===============================
+<!--LIST-->
+<p/>List:
+<ul th:if="${model.languages.size() >= 5}">
+    <p th:if="${model.languages.size() &lt;= 3} AND ${isAdmin}"/>
+    <li th:each="listOf : ${model.languages}" th:text="${listOf}">List of Languages</li>
+    <p th:if="${model.languages.size() &lt;= 3} OR ${isAdmin}"/>
+    <li th:each="listOf : ${model.languages}" th:text="${listOf}">List of Languages</li>
+</ul>
+<p th:text="${model.languages.size() >= 3? '>=3' : '<=3'}">Ternary operator</p>
+
+<img th:src="@{img/unnamed.jpg}" src="img/unnamed.jpg" alt="some descr"/>
+<!--Fragments-->
+<div th:replace="fragments/menu_fragments :: footer_menu"></div>
+
+</body>
+</html>

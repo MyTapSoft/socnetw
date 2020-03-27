@@ -23,7 +23,7 @@ public interface UserRepository extends CrudRepository<User, Long> {
             "AND r.status = :statusAND u.user_id != :userId", nativeQuery = true)
     List<User> findFriendById(@Param("userId") Long userId);
 
-    @Query(value = "SELECT * FROM users WHERE email = :userMail OR phone_number221 = :phoneNumber", nativeQuery = true)
+    @Query(value = "SELECT * FROM users WHERE email = :userMail OR phone_number = :phoneNumber", nativeQuery = true)
     User isEmailOrPhoneExist(@Param("userMail") String userMail, @Param("phoneNumber") String phoneNumber);
 
     @Query(value = "SELECT u.* FROM users u " +

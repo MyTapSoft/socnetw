@@ -1,6 +1,6 @@
-package com.socnetw.socnetw.security;
+package com.socnetw.socnetw.securityConfig;
 
-import com.socnetw.socnetw.auth.UserDetailsServiceImpl;
+import com.socnetw.socnetw.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -16,10 +16,10 @@ import java.util.concurrent.TimeUnit;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final PasswordEncoder encoder;
-    private UserDetailsServiceImpl userService;
+    private UserService userService;
 
     @Autowired
-    public SecurityConfig(PasswordEncoder encoder, UserDetailsServiceImpl userService) {
+    public SecurityConfig(PasswordEncoder encoder, UserService userService) {
         this.encoder = encoder;
         this.userService = userService;
     }
@@ -31,7 +31,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .headers().frameOptions().disable()
                 .and()
                 .authorizeRequests()
-                    .antMatchers("/", "/index", "/login", "/css/*", "/js/*")
+                    .antMatchers("/*", "/index", "/login","/registration/*", "/css/*", "/js/*", "/img/**")
                     .permitAll()
                     .anyRequest()
                     .authenticated()
@@ -44,7 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .rememberMe()
                     .tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(21))
-                    .key("kjSdshfdshfo234@#$s")
+                    .key("dfgdfggfh#@Fvl;")
                     .rememberMeParameter("remember-me")
                 .and()
                 .logout()
@@ -58,6 +58,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(daoAuthenticationProvider());
+        auth.userDetailsService(userService);
     }
 
     @Bean

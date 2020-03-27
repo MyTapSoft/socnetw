@@ -1,4 +1,4 @@
-package com.socnetw.socnetw.security;
+package com.socnetw.socnetw.securityConfig;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,8 +1,9 @@
-package com.socnetw.socnetw.service.Validator;
+package com.socnetw.socnetw.validation.chainOfResp;
 
 
 import com.socnetw.socnetw.exceptions.BadRequestException;
 import com.socnetw.socnetw.model.RelationshipStatus;
+import com.socnetw.socnetw.validation.chainOfResp.Chain;
 
 public class RequestAmountChain extends Chain {
     private Long requestAmount;

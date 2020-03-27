@@ -1,13 +1,13 @@
 package com.socnetw.socnetw.service;
 
 import com.socnetw.socnetw.exceptions.BadRequestException;
-import com.socnetw.socnetw.exceptions.DuplicateException;
+import com.socnetw.socnetw.exceptions.UserAlreadyExist;
 import com.socnetw.socnetw.exceptions.InternalServerException;
 import com.socnetw.socnetw.exceptions.NotFoundException;
 import com.socnetw.socnetw.model.Relationship;
 import com.socnetw.socnetw.model.RelationshipStatus;
 import com.socnetw.socnetw.repository.RelationshipRepository;
-import com.socnetw.socnetw.service.Validator.*;
+import com.socnetw.socnetw.validation.chainOfResp.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +30,7 @@ public class RelationshipService {
 
         if (relationship != null && (relationship.getStatus() == RelationshipStatus.DELETED || relationship.getStatus() == RelationshipStatus.CANCELED))
             return update(userIdFrom, userIdTo, RelationshipStatus.PENDING);
-        else if (relationship != null) throw new DuplicateException("Relationship Already Exist");
+        else if (relationship != null) throw new UserAlreadyExist("Relationship Already Exist");
         if (dao.findFriendsRequestAmount(from) > 10) throw new BadRequestException("Request amount limit");
 
         relationship = new Relationship();
@@ -79,7 +79,7 @@ public class RelationshipService {
 
 
         if (relationship.get().getStatus() == desiredStatus)
-            throw new DuplicateException("Status Already Established between users with ID: " + from + " ID: " + to);
+            throw new UserAlreadyExist("Status Already Established between users with ID: " + from + " ID: " + to);
 
         Chain chain, chain1, chain2, chain3, chain4, chain5, chain6, chain7;
         chain = new FriendsAmountChain(RelationshipStatus.ACCEPTED, getFriendsAmount(from));

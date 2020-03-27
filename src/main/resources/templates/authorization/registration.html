@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>User Registration</title>
+    <div th:replace="fragments/css_fragments :: css_background_layer"></div>
+</head>
+
+<body>
+<div style="text-align:center">
+    <div th:replace="fragments/menu_fragments :: header_menu"></div>
+</div>
+<div style="margin: 0 auto; width: 20%; padding-top: 18%;">
+    <div class="registration-form">
+        <!--/*@thymesVar id="userDTO" type="com.socnetw.socnetw.model.UserDTO"*/-->
+        <form id="form" method="post" action="/user/save" th:object="${userDTO}">
+            <label>
+                <input name="username" placeholder="Username" required="required" th:field="*{username}"
+                       type="text">
+            </label>
+            <ul>
+                <li th:each="err : ${#fields.errors('username')}" th:text="${err}"></li>
+            </ul>
+            <label>
+                <input name="realName" placeholder="Real Name"
+                       type="text" th:field="*{realName}">
+            </label>
+            <ul>
+                <li th:each="err : ${#fields.errors('realName')}" th:text="${err}"></li>
+            </ul>
+            <span></span><br>
+            <label>
+                <input name="email" placeholder="Email" required="required" th:field="*{email}"
+                       type="email">
+            </label>
+            <ul>
+                <li th:each="err : ${#fields.errors('email')}" th:text="${err}"></li>
+            </ul>
+
+            <label>
+                <input name="phoneNumber" placeholder="Phone Number" required="required" th:field="*{phoneNumber}"
+                       type="tel">
+            </label>
+            <ul>
+                <li th:each="err : ${#fields.errors('phoneNumber')}" th:text="${err}"></li>
+            </ul>
+            <span></span><br>
+
+            <label>
+                <input name="password" placeholder="Password" th:field="*{password}"
+                       required="required" type="password">
+            </label>
+            <ul>
+                <li th:each="err : ${#fields.errors('password')}" th:text="${err}"></li>
+            </ul>
+            <label>
+                <input name="passwordMatcher" placeholder="Repeat password" th:field="*{matchingPassword}"
+                       required="required" type="password">
+            </label>
+            <ul>
+                <li th:each="err : ${#fields.errors('matchingPassword')}" th:text="${err}"></li>
+            </ul>
+            <span></span><br>
+            <button type="submit" style="margin-top: 20px">Register</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

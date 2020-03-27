@@ -3,17 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Home Page</title>
-
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css" rel="stylesheet"
-          type="text/css">
-    <link rel="stylesheet" th:href="@{/css/style.css}" type="text/css">
-
+    <div th:replace="fragments/css_fragments :: css_background_layer"></div>
+    <div style="text-align:center">
+        <div th:replace="fragments/menu_fragments :: header_menu"></div>
+    </div>
 </head>
 <body>
-<div class="overlay"></div>
-<div class="topnav" id="myTopnav">
-    <a class="active" href="http://localhost:8080/">Home</a>
-    <a href="http://localhost:8080/login">Login</a>
-</div>
+<h2>Welcome</h2>
 </body>
 </html>

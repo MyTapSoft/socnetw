@@ -1,18 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-
 <head>
     <meta charset="UTF-8">
     <title>Post Page</title>
-
     <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css" rel="stylesheet"
           type="text/css">
     <link rel="stylesheet" th:href="@{/css/style.css}" type="text/css">
 </head>
 <body>
-
 <audio id="onClick" src="../../static/sound/onClick.wav"></audio>
-
 <div class="overlay"></div>
 <div class="topnav" id="myTopnav">
     <a class="active" href="http://localhost:8080/" onclick="play()">Home</a>
@@ -22,17 +18,12 @@
         <i class="fa fa-bars"></i>
     </a>
 </div>
-
 <div class="post">
     <p th:text="${post.getId()}"></p>
     <p th:text="${post.getMessage()}"></p>
     <p th:text="${post.getDatePosted()}"></p>
     <p th:text="${post.getUserPosted().username}"></p>
-
 </div>
-
 <script src="../../static/js/menu.js"></script>
-
 </body>
-
 </html>

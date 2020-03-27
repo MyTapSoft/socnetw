@@ -1,8 +1,10 @@
 package com.socnetw.socnetw.controller;
 
+import com.socnetw.socnetw.model.UserDTO;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("/")
@@ -14,12 +16,13 @@ public class HomeController {
     }
 
     @GetMapping("registration")
-    public String getRegistrationPage() {
-        return "user/registration";
+    public ModelAndView getRegistrationPage() {
+        return new ModelAndView("authorization/registration", "userDTO", new UserDTO());
     }
 
     @GetMapping("login")
     public String getLoginPage() {
-        return "user/login";
+        return "authorization/login";
+
     }
 }

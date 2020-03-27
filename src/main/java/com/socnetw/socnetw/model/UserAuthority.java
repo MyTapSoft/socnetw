@@ -3,11 +3,12 @@ package com.socnetw.socnetw.model;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Data
 @Entity
 @Table(name = "authority")
-public class UserAuthority {
+public class UserAuthority implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

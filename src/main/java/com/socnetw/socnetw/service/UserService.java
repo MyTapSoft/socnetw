@@ -1,32 +1,45 @@
 package com.socnetw.socnetw.service;
 
-import com.socnetw.socnetw.exceptions.DuplicateException;
+import com.socnetw.socnetw.authorization.UserAuthDetails;
+import com.socnetw.socnetw.converter.UserConverter;
+import com.socnetw.socnetw.exceptions.UserAlreadyExist;
 import com.socnetw.socnetw.exceptions.NotFoundException;
 import com.socnetw.socnetw.exceptions.UnauthorizedException;
 import com.socnetw.socnetw.model.User;
+import com.socnetw.socnetw.model.UserDTO;
 import com.socnetw.socnetw.repository.UserRepository;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserService {
+@Slf4j
+public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder encoder;
 
-    public UserService(UserRepository userRepository) {
+    @Autowired
+    public UserService(UserRepository userRepository, PasswordEncoder encoder) {
         this.userRepository = userRepository;
+        this.encoder = encoder;
     }
 
-    public User saveUser(User user) {
-        if (userRepository.isEmailOrPhoneExist(user.getEmail(), user.getPhoneNumber()) != null) {
-            throw new DuplicateException("Email or Phone Number Already Exist");
+    public User saveUser(UserDTO userDTO) {
+        if (userRepository.isEmailOrPhoneExist(userDTO.getEmail(), userDTO.getPhoneNumber()) != null) {
+            throw new UserAlreadyExist("Email or Phone Number Already Exist");
         }
+        User user = UserConverter.map(userDTO);
+        user.setPassword(encoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 
@@ -75,6 +88,17 @@ public class UserService {
 
     private static void isUserLogin(HttpSession session) throws UnauthorizedException {
         if (session.getAttribute("loginStatus") == null) throw new UnauthorizedException("You have to login first");
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public UserDetails loadUserByUsername(String username) {
+        User user = userRepository.findUserByUsername(username);
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found.");
+        }
+        log.info("loadUserByUsername() : {}", username);
+        return new UserAuthDetails(user);
     }
 
 }

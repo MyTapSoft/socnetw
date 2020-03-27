@@ -1,4 +1,4 @@
-package com.socnetw.socnetw.auth;
+package com.socnetw.socnetw.authorization;
 
 import com.socnetw.socnetw.model.User;
 import lombok.AllArgsConstructor;
@@ -52,7 +52,4 @@ public class UserAuthDetails implements UserDetails {
         return true;
     }
 
-    public User getUserDetails() {
-        return user;
-    }
 }

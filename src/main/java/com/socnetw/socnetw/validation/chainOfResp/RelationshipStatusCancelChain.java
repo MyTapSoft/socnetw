@@ -1,7 +1,8 @@
-package com.socnetw.socnetw.service.Validator;
+package com.socnetw.socnetw.validation.chainOfResp;
 
 import com.socnetw.socnetw.exceptions.BadRequestException;
 import com.socnetw.socnetw.model.RelationshipStatus;
+import com.socnetw.socnetw.validation.chainOfResp.Chain;
 
 public class RelationshipStatusCancelChain extends Chain {
     private RelationshipStatus relationshipStatus;

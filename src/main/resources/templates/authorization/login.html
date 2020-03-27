@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div class="overlay"></div>
+<head>
+    <meta charset="UTF-8">
+    <title>User Login</title>
+    <div th:replace="fragments/css_fragments :: css_background_layer"></div>
+</head>
+<body>
+<div style="text-align:center">
+    <div th:replace="fragments/menu_fragments :: header_menu"></div>
+</div>
+<div style="margin: 0 auto; width: 30%; padding-top: 18%;">
+    <form class="form-signin" method="post" action="/login">
+        <h2 class="form-signin-heading">Authentication required</h2>
+        <input type="text" id="username" name="username" class="form-control" placeholder="Username" required="required"
+               autofocus="">
+        <input type="password" id="password" name="password" class="form-control" placeholder="Password"
+               required="required">
+        <p> Remember me?
+            <input type="checkbox" id="remember-me" name="remember-me" class="form-control">
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+        </p>
+    </form>
+</div>
+</body>
+</html>
